@@ -37,11 +37,13 @@ const mainMenuItems = [
     title: "Reports",
     url: "/reports",
     icon: BarChart3,
+    disabled: true,
   },
   {
     title: "Budgets",
     url: "/budgets",
     icon: Target,
+    disabled: true,
   },
 ]
 
@@ -107,16 +109,29 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {mainMenuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Button asChild variant={pathname === item.url ? 'default' : 'link'} className={`${pathname === item.url ? 'shadow-lg' : 'null'} hover:bg-secondary flex items-center justify-start`}>
-                      <Link href={item.url}>
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
-                      </Link>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                    item.disabled ? (
+                      <SidebarMenuItem key={item.title}>
+                          <div className="flex h-10 cursor-not-allowed items-center justify-start gap-2 rounded-md px-3 text-sm font-medium text-muted-foreground opacity-50">
+                              <item.icon className="h-4 w-4" />
+                              <span>{item.title}</span>
+                          </div>
+                      </SidebarMenuItem>
+                  ) : (
+                      <SidebarMenuItem key={item.title}>
+                          <SidebarMenuButton asChild>
+                              <Button 
+                                  asChild 
+                                  variant={pathname === item.url ? 'default' : 'link'} 
+                                  className={`${pathname === item.url ? 'shadow-lg' : ''} hover:bg-secondary flex items-center justify-start`}
+                              >
+                                  <Link href={item.url}>
+                                      <item.icon className="h-4 w-4" />
+                                      <span>{item.title}</span>
+                                  </Link>
+                              </Button>
+                          </SidebarMenuButton>
+                      </SidebarMenuItem>
+                  )
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

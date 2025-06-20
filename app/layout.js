@@ -1,7 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import { LayoutWrapper } from "@/components/layout-wrapper";
 
 const geistSans = Geist({
@@ -16,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "FinTrack",
-  description: "Budget Tracket App for Your Money Management",
+  description: "Budget Tracker App for Your Financial Management",
 };
 
 export default function RootLayout({ children }) {

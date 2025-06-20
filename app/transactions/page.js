@@ -17,6 +17,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import axios from "axios"
+import api from "@/lib/axios"
 
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat("id-ID", {
@@ -107,55 +108,23 @@ export default function TransactionsPage() {
     }
 
     const GetCategoriesFromDB = async () => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            const res = await axios.get('http://127.0.0.1:8000/api/categories', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
-            })
-            setCategories(res.data)
-        }
+        const res = await api.get('/categories')
+        setCategories(res.data)
     }
 
     const GetTransactionsFromDB = async () => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            const res = await axios.get('http://127.0.0.1:8000/api/transactions', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            if (res.data && Array.isArray(res.data.data)) {
-                setTransactions(res.data.data)
-            }
-        }
+        const res = await api.get('/transactions')
+        setTransactions(res?.data?.data || [])
     }
 
     const StoreTransactionsToDB = async (transaction) => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            const res = await axios.post('http://127.0.0.1:8000/api/transactions', transaction, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
-            })
-            return res.data
-        }
+        const res = api.post('/transactions', transaction)
+        return res.data
     }
 
     const UpdateTransactionFromDB = async (transaction) => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            const res = await axios.put(`http://127.0.0.1:8000/api/transactions/${transaction.id}`, transaction, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            return res.data
-        }
+        const res = api.put('/transactions', transaction)
+        setTransactions(res.data)
     }
 
     const handleSave = async () => {
@@ -198,21 +167,16 @@ export default function TransactionsPage() {
     }
 
     const handleDeleteTransaction = async (transactionId) => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            try {
-                setDeletingTransactionId(transactionId)
-                const res = await axios.delete(`http://127.0.0.1:8000/api/transactions/${transactionId}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                if (res.status === 204) {
-                    setTransactions(transactions.filter((transaction) => transaction.id !== transactionId))
-                }
-            } catch (error) {
-                console.log("Gagal menghapus transaksi", error)
-            } finally {
-                setDeletingTransactionId(null)
+        try {
+            setDeletingTransactionId(transactionId)
+            const res = await api.delete(`/transactions/${transactionId}`)
+            if (res.status === 204) {
+                setTransactions(transactions.filter((transaction) => transaction.id !== transactionId))
             }
+        } catch (error) {
+            console.log("Gagal menghapus transaksi", error)
+        } finally {
+            setDeletingTransactionId(null)
         }
     }
 

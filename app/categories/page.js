@@ -20,6 +20,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import axios from "axios"
+import api from "@/lib/axios"
 
 export default function CategoriesPage() {
     const [refreshData, setRefreshData] = useState(false)
@@ -33,15 +34,11 @@ export default function CategoriesPage() {
     })
 
     const fetchCategories =  async () => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            const res = await axios.get('http://127.0.0.1:8000/api/categories', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            })
+        try {
+            const res = await api.get('/categories')
             setCategories(res.data)
+        } catch (error) {
+            console.log("Gagal mengambil kategori:", error)
         }
     }
     useEffect(() => {
@@ -63,29 +60,13 @@ export default function CategoriesPage() {
     }
 
     const StoreCategoryToDB = async (category) => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            const res = await axios.post('http://127.0.0.1:8000/api/categories', category, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
-            })
-            return res.data
-        }
+        const res = await api.post('/categories', category)
+        return res.data
     }
 
     const UpdateCategoryFromDB = async (category) => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            const res = await axios.put(`http://127.0.0.1:8000/api/categories/${category.id}`, category, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
-            })
-            return res.data
-        }
+        const res = await api.put(`/categories/${category.id}`, category)
+        return res.data
     }
 
     // Handle saving category
@@ -124,25 +105,20 @@ export default function CategoriesPage() {
 
     // Menghapus kategori
     const handleDelete = async (categoryId) => {
-        const token = localStorage.getItem('user_token')
-        if (token) {
-            try {
-                setDeletingCategoryId(categoryId)
-                const res = await axios.delete(`http://127.0.0.1:8000/api/categories/${categoryId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    }
-                })
-                if (res.status === 200) {
-                    setRefreshData(prev =>  !prev)
-                    setCategories(categories.filter((cat) => cat.id !== categoryId))
-                }
-            } catch (error) {
-                console.error('Gagal menghapus kategori:', error)
-            } finally {
-                setDeletingCategoryId(null)
+        try {
+            setDeletingCategoryId(categoryId)
+            const res = await api.delete(`/categories/${categoryId}`)
+            if (res.status === 200) {
+                // setRefreshData(prev =>  !prev)
+                // setCategories(categories.filter((cat) => cat.id !== categoryId))
+                setCategories(prevCategories => 
+                    prevCategories.filter(category => category.id !== categoryId)
+                )
             }
+        } catch (error) {
+            console.error('Gagal menghapus kategori:', error)
+        } finally {
+            setDeletingCategoryId(null)
         }
     }
 
