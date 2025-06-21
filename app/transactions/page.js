@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { CalendarIcon, ChevronLeft, ChevronRight, Edit, LoaderCircle, MoreHorizontal, Plus, Search, Trash2 } from "lucide-react"
+import { CalendarIcon, ChevronLeft, ChevronRight, Edit, LoaderCircle, LoaderPinwheel, MoreHorizontal, Plus, Search, Trash2 } from "lucide-react"
 import { format } from "date-fns"
 import { id } from "date-fns/locale"
 
@@ -50,6 +50,7 @@ export default function TransactionsPage() {
     const [isLoadingCategories, setIsLoadingCategories] = useState(false)
     const [transactions, setTransactions] = useState([])
     const [deletingTransactionId, setDeletingTransactionId] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const getCategoryBadgeColor = (categoryName) => {
         const category = categories?.find((cat) => cat?.name === categoryName)
@@ -118,13 +119,29 @@ export default function TransactionsPage() {
     }
 
     const StoreTransactionsToDB = async (transaction) => {
-        const res = await api.post('/transactions', transaction)
-        return res.data
+        setIsLoading(true)
+        try {
+            const res = await api.post('/transactions', transaction)
+            return res.data
+            setTransactions(res?.data?.data || [])
+        } catch (err) {
+            console.log("Gagal menyimpan transaksi:", err)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const UpdateTransactionFromDB = async (transaction) => {
-        const res = await api.put('/transactions', transaction)
-        setTransactions(res.data)
+        setIsLoading(true)
+        try {
+            const res = await api.put('/transactions', transaction)
+            setTransactions(res.data)
+        } catch (err) {
+            console.log("Gagal mengubah transaksi:", err)
+        } finally {
+            setIsLoading(false)
+        }
+
     }
 
     const handleSave = async () => {
@@ -287,8 +304,11 @@ export default function TransactionsPage() {
                                 <Button variant="outline" onClick={handleDialogClose}>
                                     Batal
                                 </Button>
-                                <Button onClick={handleSave}>
+                                {/* <Button onClick={handleSave}>
                                     Simpan
+                                </Button> */}
+                                <Button onClick={handleSave} disabled={isLoading === true}>
+                                    {isLoading ? <LoaderPinwheel className="h-4 w-4 animate-spin" /> : "Simpan"}
                                 </Button>
                             </DialogFooter>
                         </DialogContent>
