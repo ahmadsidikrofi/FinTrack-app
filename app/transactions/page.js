@@ -118,12 +118,12 @@ export default function TransactionsPage() {
     }
 
     const StoreTransactionsToDB = async (transaction) => {
-        const res = api.post('/transactions', transaction)
+        const res = await api.post('/transactions', transaction)
         return res.data
     }
 
     const UpdateTransactionFromDB = async (transaction) => {
-        const res = api.put('/transactions', transaction)
+        const res = await api.put('/transactions', transaction)
         setTransactions(res.data)
     }
 
