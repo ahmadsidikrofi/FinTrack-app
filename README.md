@@ -12,8 +12,8 @@ FinTrack adalah aplikasi web modern yang memungkinkan pengguna untuk mencatat pe
 
 ---
 
-* **Framework:** Next.js 14, React 18
-* **Styling:** Tailwind CSS, shadcn/ui
+* **Framework:** Next.js 15, React 19
+* **Styling:** Tailwind CSS v4, shadcn/ui
 * **State Management:** React Hooks (useState, useEffect, useContext)
 * **Data Fetching:** Axios
 * **Charts & Visuals:** Recharts, `react-markdown`
@@ -31,7 +31,7 @@ FinTrack adalah aplikasi web modern yang memungkinkan pengguna untuk mencatat pe
 
 - **🤖 Laporan Analisis AI:** Fitur unggulan di mana pengguna bisa mendapatkan ringkasan dan saran keuangan yang di-generate oleh AI (IBM Granite) berdasarkan data riil mereka.
 
-- **🔐 Autentikasi Aman:** Sistem registrasi, login, dan logout yang aman menggunakan token-based authentication (Laravel Sanctum) untuk melindungi data pengguna.
+- **🔐 Autentikasi Aman:** Sistem registrasi, login, dan logout yang aman menggunakan token-based authentication untuk melindungi data pengguna.
 
 - **📱 Desain Responsif:** Tampilan yang optimal dan nyaman digunakan di berbagai ukuran layar, dari desktop hingga mobile.
 
@@ -42,9 +42,8 @@ Berikut adalah langkah-langkah untuk menjalankan proyek ini di lingkungan lokal.
 ### Pre-requisite
 
 Pastikan kamu sudah menginstal perangkat lunak berikut:
-- (Untuk Backend) PHP 8.2 atau lebih baru
-- (Untuk Backend) Composer
-- (Untuk Backend) MySQL atau database sejenis
+- Node.js v20 atau lebih baru
+- npm / yarn / pnpm / bun
 
 ### Langkah Instalasi
 
@@ -74,6 +73,7 @@ Pastikan kamu sudah menginstal perangkat lunak berikut:
    
 7. Aplikasi akan berjalan di http://localhost:3000.
 
-![image](https://github.com/user-attachments/assets/3a134d7e-2cf0-43cb-88d9-495c6f315b85)
-
 ![image](https://github.com/user-attachments/assets/ba07e534-af0b-486f-baa8-6b8836d34a75)
+![image](https://github.com/user-attachments/assets/ef3a1c7f-8e17-4103-9932-24801588346e)
+![image](https://github.com/user-attachments/assets/0e8965d1-1a97-477f-a8bd-5e29102c4993)
+
