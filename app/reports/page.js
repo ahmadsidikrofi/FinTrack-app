@@ -40,35 +40,45 @@ export default function ReportsPage() {
 
             const summaryData = summaryResponse.data;
             const spendingData = spendingResponse.data;
-            const topExpenseCategory = spendingData.length > 0 ? spendingData[0].category_name : "Tidak ada pengeluaran"
+            const topExpenseCategory = spendingData.data.length > 0 ? spendingData.data[0].category_name : "Tidak ada pengeluaran"
 
             console.log("Data berhasil diambil:", { summaryData, topExpenseCategory })
 
             const prompt = `
-            You are Fin-AI, a personal finance assistant who is smart, friendly, and provides in-depth analysis based on data.
-            Create a JSON financial report.
-            IMPORTANT: Return ONLY valid JSON with NO extra text.
+            Anda adalah Fin-AI, asisten keuangan pribadi yang cerdas, ramah, dan memberikan analisis mendalam berdasarkan data.
+            Buatlah laporan keuangan dalam bentuk JSON.
+            PENTING: Kembalikan HANYA format JSON yang valid tanpa teks tambahan.
 
-            INPUT DATA:
-            - Total Income: Rp ${parseInt(summaryData.total_income).toLocaleString('id-ID')}
-            - Total Expense: Rp ${parseInt(summaryData.total_expense).toLocaleString('id-ID')}
-            - Top Expense Category: "${topExpenseCategory}"
+            ATURAN UTAMA:
+            - JAWAB HANYA dengan JSON string yang valid.
+            - JANGAN PERNAH menambahkan teks pembuka atau penutup di luar JSON.
+            - Nilai dari "summary" dan "advice" HARUS berupa satu string tunggal.
+            - Di dalam nilai "summary", JANGAN gunakan kalimat pembuka seperti "Berikut adalah analisis..." atau "Dari data yang diberikan...". Langsung mulai dengan analisisnya.
+            - Gunakan bahasa Indonesia.
 
-            REQUIRED JSON FORMAT (advice MUST be a single string with \\n for line breaks):
+            --- CONTOH ---
+            DATA INPUT:
+            - Total Pemasukan: Rp 10.000.000
+            - Total Pengeluaran: Rp 7.000.000
+            - Kategori pengeluaran terbesar: "Transportasi"
+
+            JSON OUTPUT YANG DIHARAPKAN:
             {
-                "summary": "Brief analysis in Indonesian with **markdown** formatting",
-                "advice": "1. **First advice** based on data\\n2. **Second advice** based on data\\n3. **Third advice** for improvement"
+                "summary": "Dengan surplus sebesar Rp 3.000.000, kondisi keuangan Anda bulan ini **sangat sehat**. Pengeluaran terbesar Anda ada pada kategori Transportasi.",
+                "advice": "1. **Evaluasi Biaya Transportasi**: Coba cari alternatif untuk mengurangi pengeluaran di pos ini.\\n2. **Alokasikan Surplus**: Manfaatkan sisa dana untuk investasi atau dana darurat."
             }
-                
-            Return JSON Only:
-            
-            RULES:
-            - summary: string with markdown
-            - advice: single string with numbered points separated by \\n
-            - Use Indonesian language
-            - NO arrays, only strings
+            ---
 
-            JSON:`
+            SEKARANG, PROSES DATA DI BAWAH INI DAN BERIKAN JSON OUTPUT-NYA SESUAI ATURAN DI ATAS:
+
+            DATA INPUT:
+            - Total Pemasukan: Rp ${parseInt(summaryData.total_income).toLocaleString('id-ID')}
+            - Total Pengeluaran: Rp ${parseInt(summaryData.total_expense).toLocaleString('id-ID')}
+            - Kategori pengeluaran terbesar: "${topExpenseCategory}"
+
+            JSON OUTPUT:
+            
+            `
 
             const aiResponse = await axios.post('/api/generate-report', { prompt })
             if (aiResponse.status !== 200) {

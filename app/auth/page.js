@@ -64,7 +64,6 @@ export default function AuthPage() {
     setSuccessMessage('')
     try {
         const res = await api.post('/register', registerForm)
-        console.log(res.data);
         if (res.data) {
             setSuccess(true)
             setSuccessMessage('Registrasi berhasil dilakukan. Silahkan login terlebih dahulu')
@@ -80,19 +79,18 @@ export default function AuthPage() {
             const formattedErrors = {};
             for (const key in backendErrors) {
                 if (backendErrors[key] && backendErrors[key].length > 0) {
-                    formattedErrors[key] = backendErrors[key][0];
+                    formattedErrors[key] = backendErrors[key][0]
                 }
             }
-            setErrors(formattedErrors);
+            setErrors(formattedErrors)
         } else {
-            setErrors({ general: 'Terjadi kesalahan pada server. Coba lagi nanti.' });
-            console.log("Registration error:", error);
+            setErrors({ general: 'Terjadi kesalahan pada server. Coba lagi nanti.' })
+            console.log("Registration error:", error)
         }
     }
   }
 
   const handleGoogleLogin = () => {
-    // Handle Google login logic here
     console.log("Google login")
   }
 
