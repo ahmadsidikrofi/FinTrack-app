@@ -28,6 +28,7 @@ import { usePathname, useRouter } from "next/navigation"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { deleteCookie } from "@/lib/cookies"
+import { useTheme } from "next-themes"
 
 const mainMenuItems = [
   {
@@ -72,17 +73,16 @@ export function AppSidebar() {
   const router = useRouter()
   const [user, setUserData] = useState([])
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const { setTheme } = useTheme()
 
   const handleFullscreen = () => {
     if (!document.fullscreenElement) {
-      // Masuk ke mode fullscreen
       document.documentElement.requestFullscreen().then(() => {
         setIsFullscreen(true)
       }).catch((err) => {
         console.error('Error attempting to enable fullscreen:', err)
       })
     } else {
-      // Keluar dari mode fullscreen
       document.exitFullscreen().then(() => {
         setIsFullscreen(false)
       }).catch((err) => {
@@ -91,7 +91,6 @@ export function AppSidebar() {
     }
   }
 
-  // Listen untuk perubahan fullscreen
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement)
