@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Edit, LoaderCircle, Plus, Trash2 } from "lucide-react"
+import { Edit, Loader, LoaderCircle, Plus, Trash2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -32,6 +32,7 @@ export default function CategoriesPage() {
         name: "",
         type: "Pengeluaran",
     })
+    const [isLoading, setIsLoading] = useState(false)
 
     const fetchCategories =  async () => {
         try {
@@ -60,13 +61,27 @@ export default function CategoriesPage() {
     }
 
     const StoreCategoryToDB = async (category) => {
-        const res = await api.post('/categories', category)
-        return res.data
+        setIsLoading(true)
+        try {
+            const res = await api.post('/categories', category)
+            return res.data
+        } catch (error) {
+            console.log("Gagal menyimpan kategori:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const UpdateCategoryFromDB = async (category) => {
-        const res = await api.put(`/categories/${category.id}`, category)
-        return res.data
+        setIsLoading(true)
+        try {
+            const res = await api.put(`/categories/${category.id}`, category)
+            return res.data
+        } catch(err) {
+            console.log("Gagal menyimpan kategori:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     // Handle saving category
@@ -182,8 +197,8 @@ export default function CategoriesPage() {
                                 <Button variant="outline" onClick={handleDialogClose}>
                                     Batal
                                 </Button>
-                                <Button onClick={handleSave} disabled={!formData.name.trim()}>
-                                    Simpan
+                                <Button onClick={handleSave} disabled={!formData.name.trim() || isLoading === true}>
+                                    {isLoading ? <Loader className="h-4 w-4 animate-spin"/> : "Simpan"}
                                 </Button>
                             </DialogFooter>
                         </DialogContent>

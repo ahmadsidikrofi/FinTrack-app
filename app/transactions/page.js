@@ -375,28 +375,28 @@ export default function TransactionsPage() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="text-slate-500 p-4">Tanggal</TableHead>
-                                <TableHead className="text-slate-500 p-4">Deskripsi</TableHead>
-                                <TableHead className="text-slate-500 p-4">Kategori</TableHead>
-                                <TableHead className="text-slate-500 p-4">Tipe</TableHead>
-                                <TableHead className="text-slate-500 text-right p-4">Jumlah</TableHead>
-                                <TableHead className="text-slate-500 w-[80px] p-4">Aksi</TableHead>
+                                <TableHead className="text-slate-500 p-4 dark:text-white">Tanggal</TableHead>
+                                <TableHead className="text-slate-500 p-4 dark:text-white">Deskripsi</TableHead>
+                                <TableHead className="text-slate-500 p-4 dark:text-white">Kategori</TableHead>
+                                <TableHead className="text-slate-500 p-4 dark:text-white">Tipe</TableHead>
+                                <TableHead className="text-slate-500 text-right p-4 dark:text-white">Jumlah</TableHead>
+                                <TableHead className="text-slate-500 w-[80px] p-4 dark:text-white">Aksi</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody className='text-slate-800'>
                             {paginatedTransactions.length > 0 ? (
                                 paginatedTransactions.map((transaction) => (
                                     <TableRow key={transaction.id}>
-                                        <TableCell className="font-medium p-5">
+                                        <TableCell className="font-medium p-5 dark:text-white">
                                             {format(new Date(transaction.transaction_date), "dd MMM yyyy", { locale: id })}
                                         </TableCell>
-                                        <TableCell className="p-5">{transaction.description}</TableCell>
-                                        <TableCell className="p-5">
+                                        <TableCell className="p-5 dark:text-white">{transaction.description}</TableCell>
+                                        <TableCell className="p-5 dark:text-white">
                                             <Badge variant="outline" className={`rounded-full bg-${getCategoryBadgeColor(transaction?.category?.name)}-100 text-${getCategoryBadgeColor(transaction?.category?.name)}-800 border-${getCategoryBadgeColor(transaction?.category?.name)}-200`}>
                                                 {transaction?.category?.name}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className="p-5">
+                                        <TableCell className="p-5 dark:text-white">
                                             <span className={transaction?.category?.type === "Pemasukan" ? "text-green-600" : "text-red-600"}>
                                                 {transaction?.category?.type}
                                             </span>

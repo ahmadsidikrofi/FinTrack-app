@@ -1,6 +1,6 @@
 "use client"
 
-import { BarChart3, Home, List, LogOut, Target, Tag, Sun, Moon, FullscreenIcon, Loader2 } from "lucide-react"
+import { Home, List, LogOut, Target, Tag, Sun, Moon, FullscreenIcon, Loader2, SparkleIcon, LoaderCircle } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Sidebar,
@@ -43,10 +43,9 @@ const mainMenuItems = [
     icon: List,
   },
   {
-    title: "Reports",
+    title: "IBM AI-Reports",
     url: "/reports",
-    icon: BarChart3,
-    disabled: true,
+    icon: SparkleIcon,
   },
   {
     title: "Budgets",
@@ -146,8 +145,12 @@ export function AppSidebar() {
   }
 
   const FetchUserData = async () => {
+    setLoading(true)
     const res = await api.get('/user')
-    if (res) setUserData(res.data)
+    if (res) {
+      setUserData(res.data)
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -242,11 +245,11 @@ export function AppSidebar() {
             <div className="flex items-center gap-3 px-2 py-2">
               <Avatar className="h-8 w-8">
                 <AvatarImage alt="Rofi. D." />
-                <AvatarFallback>{user?.name?.charAt(0) || '-'}</AvatarFallback>
+                <AvatarFallback>{loading ? <LoaderCircle className="h-4 w-4 animate-spin"/> : user?.name?.charAt(0) || '-'}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <span className="text-sm font-medium">{user?.name}</span>
-                <span className="text-xs text-muted-foreground">{user?.email}</span>
+                <span className="text-sm font-medium">{loading ? <LoaderCircle className="h-4 w-4 animate-spin"/> : user?.name}</span>
+                <span className="text-xs text-muted-foreground">{loading ? "Memuat email user" : user?.email}</span>
               </div>
             </div>
           </SidebarMenuItem>
