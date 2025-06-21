@@ -1,6 +1,6 @@
 "use client"
 
-import { BarChart3, Home, List, LogOut, Target, Tag } from "lucide-react"
+import { BarChart3, Home, List, LogOut, Target, Tag, Sun, Moon, FullscreenIcon } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Sidebar,
@@ -15,6 +15,13 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 import Link from "next/link"
 import { Button } from "./ui/button"
 import { usePathname, useRouter } from "next/navigation"
@@ -45,6 +52,11 @@ const mainMenuItems = [
     icon: Target,
     disabled: true,
   },
+  {
+    title: "Fullscreen",
+    icon: FullscreenIcon,
+    action: "fullscreen"
+  }
 ]
 
 const managementItems = [
@@ -59,6 +71,60 @@ export function AppSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const [user, setUserData] = useState([])
+  const [isFullscreen, setIsFullscreen] = useState(false)
+
+  const handleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      // Masuk ke mode fullscreen
+      document.documentElement.requestFullscreen().then(() => {
+        setIsFullscreen(true)
+      }).catch((err) => {
+        console.error('Error attempting to enable fullscreen:', err)
+      })
+    } else {
+      // Keluar dari mode fullscreen
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false)
+      }).catch((err) => {
+        console.error('Error attempting to exit fullscreen:', err)
+      })
+    }
+  }
+
+  // Listen untuk perubahan fullscreen
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement)
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    }
+  }, [])
+
+  const ModeToggle = () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon">
+          <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
 
   const handleLogout = async () => {
     const token = localStorage.getItem('user_token')
@@ -95,11 +161,14 @@ export function AppSidebar() {
   return (
     <Sidebar className="border-r-0" variant="sidebar">
       <SidebarHeader className="border-b border-sidebar-border">
-        <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <span className="text-sm font-bold">FT</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 px-4 py-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <span className="text-sm font-bold">FT</span>
+            </div>
+            <span className="text-lg font-semibold">FinTrack</span>
           </div>
-          <span className="text-lg font-semibold">FinTrack</span>
+          <ModeToggle />
         </div>
       </SidebarHeader>
 
@@ -115,6 +184,19 @@ export function AppSidebar() {
                               <item.icon className="h-4 w-4" />
                               <span>{item.title}</span>
                           </div>
+                      </SidebarMenuItem>
+                  ) : item.action === "fullscreen" ? (
+                      <SidebarMenuItem key={item.title}>
+                          <SidebarMenuButton asChild>
+                              <Button 
+                                  variant={isFullscreen ? 'default' : 'link'} 
+                                  className={`${isFullscreen ? 'shadow-lg' : ''} hover:bg-secondary flex items-center justify-start`}
+                                  onClick={handleFullscreen}
+                              >
+                                  {isFullscreen ? <FullscreenIcon className="h-4 w-4" /> : <item.icon className="h-4 w-4" />}
+                                  <span>{isFullscreen ? 'Exit Fullscreen' : item.title}</span>
+                              </Button>
+                          </SidebarMenuButton>
                       </SidebarMenuItem>
                   ) : (
                       <SidebarMenuItem key={item.title}>
