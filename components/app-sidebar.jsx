@@ -137,6 +137,7 @@ export function AppSidebar() {
     } catch (error) {
       console.error("API logout gagal, tetap melanjutkan logout di client:", error)
     } finally {
+      localStorage.clear()
       localStorage.removeItem('user_token')
       deleteCookie('user_token')
       setLoading(false)

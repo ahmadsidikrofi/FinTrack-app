@@ -54,6 +54,7 @@ export default function AuthPage() {
       console.log("Login error:", error)
       setSuccess(false)
       setErrorMessage('No user with email or password like this')
+      setIsLoading(false)
     }
   }
 
