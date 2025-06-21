@@ -127,8 +127,8 @@ export default function Dashboard() {
       );
     }
 
-    return null;
-  };
+    return null
+  }
 
   return (
     <SidebarInset>

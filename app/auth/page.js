@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, Loader } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -21,6 +21,7 @@ export default function AuthPage() {
   const [successMessage, setSuccessMessage] = useState('')
   const [success, setSuccess] = useState(false)
   const [errors, setErrors] = useState({})
+  const [ isLoading, setIsLoading ] = useState(false)
   const router = useRouter()
 
   // Form state
@@ -37,12 +38,14 @@ export default function AuthPage() {
   })
 
   const handleLogin = async (e) => {
+    setIsLoading(true)
     e.preventDefault()
     try {
       const res = await api.post('/login', loginForm)
       console.log(res.data)
       if (res.data.access_token) {
         setSuccess(true)
+        setIsLoading(false)
         localStorage.setItem('user_token', res.data.access_token)
         setCookie('user_token', res.data.access_token)
         router.push('/')
@@ -158,8 +161,8 @@ export default function AuthPage() {
                     <p className="text-sm text-rose-700 font-semibold">{errorMessage}</p>
                 </div>
 
-                <Button type="submit" className="w-full">
-                  Sign In
+                <Button type="submit" disabled={isLoading} className="w-full">
+                  {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : "Sign in"}
                 </Button>
               </form>
             </TabsContent>
@@ -285,7 +288,7 @@ export default function AuthPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Continue with Google are not available
+              Continue with Google still in development
             </Button>
           </div>
         </CardContent>

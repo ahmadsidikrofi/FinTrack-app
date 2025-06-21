@@ -1,6 +1,6 @@
 "use client"
 
-import { BarChart3, Home, List, LogOut, Target, Tag, Sun, Moon, FullscreenIcon } from "lucide-react"
+import { BarChart3, Home, List, LogOut, Target, Tag, Sun, Moon, FullscreenIcon, Loader2 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Sidebar,
@@ -75,6 +75,7 @@ export function AppSidebar() {
   const [user, setUserData] = useState([])
   const [isFullscreen, setIsFullscreen] = useState(false)
   const { setTheme } = useTheme()
+  const [loading, setLoading] = useState(false)
 
   const handleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -131,12 +132,15 @@ export function AppSidebar() {
 
     try {
       if (token) {
+        setLoading(true)
         await api.post('/logout')
       }
     } catch (error) {
       console.error("API logout gagal, tetap melanjutkan logout di client:", error)
     } finally {
       localStorage.removeItem('user_token')
+      deleteCookie('user_token')
+      setLoading(false)
       router.push('/auth')
     }
   }
@@ -248,12 +252,8 @@ export function AppSidebar() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              {/* <Link href="/auth">
-                <LogOut className="h-4 w-4" />
-                <span>Logout</span>
-              </Link> */}
-              <Button onClick={handleLogout}>
-                <LogOut className="h-4 w-4" />
+              <Button onClick={handleLogout} disabled={loading}>
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
                 <span>Logout</span>
               </Button>
             </SidebarMenuButton>
@@ -265,3 +265,5 @@ export function AppSidebar() {
     </Sidebar>
   )
 }
+
+
