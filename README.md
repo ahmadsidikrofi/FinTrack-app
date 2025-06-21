@@ -74,4 +74,6 @@ Pastikan kamu sudah menginstal perangkat lunak berikut:
    
 7. Aplikasi akan berjalan di http://localhost:3000.
 
-![image](https://github.com/user-attachments/assets/17d2ae9d-e614-4c54-bb12-ee5d53ae1e67)
+![image](https://github.com/user-attachments/assets/3a134d7e-2cf0-43cb-88d9-495c6f315b85)
+
+![image](https://github.com/user-attachments/assets/ba07e534-af0b-486f-baa8-6b8836d34a75)
