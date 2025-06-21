@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { setCookie } from "@/lib/cookies"
+import api from "@/lib/axios"
 
 export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -38,7 +39,7 @@ export default function AuthPage() {
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
-      const res = await axios.post('http://127.0.0.1:8000/api/login', loginForm)
+      const res = await api.post('/login', loginForm)
       console.log(res.data)
       if (res.data.access_token) {
         setSuccess(true)
@@ -58,7 +59,7 @@ export default function AuthPage() {
     setErrors({})
     setSuccessMessage('')
     try {
-        const res = await axios.post('http://127.0.0.1:8000/api/register', registerForm)
+        const res = await api.post('/register', registerForm)
         console.log(res.data);
         if (res.data) {
             setSuccess(true)
@@ -70,8 +71,6 @@ export default function AuthPage() {
         setSuccess(false)
         if (error.response && error.response.status === 422) {
             const responseData = error.response.data;
-            // Anehnya backendmu mengembalikan key "0", kita handle itu.
-            // Biasanya Laravel mengirim di dalam key "errors".
             const backendErrors = responseData[0] || responseData.errors || {};
 
             const formattedErrors = {};

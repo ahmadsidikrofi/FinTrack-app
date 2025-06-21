@@ -29,6 +29,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { deleteCookie } from "@/lib/cookies"
 import { useTheme } from "next-themes"
+import api from "@/lib/axios"
 
 const mainMenuItems = [
   {
@@ -126,31 +127,23 @@ export function AppSidebar() {
   )
 
   const handleLogout = async () => {
-    const token = localStorage.getItem('user_token')
-    if (token) {
-      axios.post('http://127.0.0.1:8000/api/logout', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const token = localStorage.getItem('user_token');
 
-      }).then(() => {
-        localStorage.removeItem('user_token')
-        deleteCookie('user_token')
-        router.push('/auth')
-      })
+    try {
+      if (token) {
+        await api.post('/logout')
+      }
+    } catch (error) {
+      console.error("API logout gagal, tetap melanjutkan logout di client:", error)
+    } finally {
+      localStorage.removeItem('user_token')
+      router.push('/auth')
     }
   }
 
   const FetchUserData = async () => {
-    const token = localStorage.getItem('user_token')
-    if (token) {
-      const res = await axios.get('http://127.0.0.1:8000/api/user', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setUserData(res.data)
-    }
+    const res = await api.get('/user')
+    if (res) setUserData(res.data)
   }
 
   useEffect(() => {
@@ -255,6 +248,10 @@ export function AppSidebar() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
+              {/* <Link href="/auth">
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </Link> */}
               <Button onClick={handleLogout}>
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
