@@ -78,7 +78,7 @@ export default function CategoriesPage() {
             const res = await api.put(`/categories/${category.id}`, category)
             return res.data
         } catch(err) {
-            console.log("Gagal menyimpan kategori:", error)
+            console.log("Gagal menyimpan kategori:", err)
         } finally {
             setIsLoading(false)
         }
@@ -108,7 +108,7 @@ export default function CategoriesPage() {
                 name: formData.name,
                 type: formData.type,
             }
-            const saveCategory = StoreCategoryToDB(newCategory)
+            const saveCategory = await StoreCategoryToDB(newCategory)
             setRefreshData((prev) => !prev)
             // setCategories([...categories, newCategory])
         }
