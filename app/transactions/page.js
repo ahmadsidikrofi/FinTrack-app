@@ -123,7 +123,6 @@ export default function TransactionsPage() {
         try {
             const res = await api.post('/transactions', transaction)
             return res.data
-            setTransactions(res?.data?.data || [])
         } catch (err) {
             console.log("Gagal menyimpan transaksi:", err)
         } finally {
@@ -135,7 +134,7 @@ export default function TransactionsPage() {
         setIsLoading(true)
         try {
             const res = await api.put(`/transactions/${transaction.id}`, transaction)
-            setTransactions(res.data)
+            return res.data
         } catch (err) {
             console.log("Gagal mengubah transaksi:", err)
         } finally {
@@ -304,9 +303,6 @@ export default function TransactionsPage() {
                                 <Button variant="outline" onClick={handleDialogClose}>
                                     Batal
                                 </Button>
-                                {/* <Button onClick={handleSave}>
-                                    Simpan
-                                </Button> */}
                                 <Button onClick={handleSave} disabled={isLoading === true}>
                                     {isLoading ? <LoaderPinwheel className="h-4 w-4 animate-spin" /> : "Simpan"}
                                 </Button>
