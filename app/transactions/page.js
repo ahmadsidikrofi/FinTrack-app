@@ -134,7 +134,7 @@ export default function TransactionsPage() {
     const UpdateTransactionFromDB = async (transaction) => {
         setIsLoading(true)
         try {
-            const res = await api.put('/transactions', transaction)
+            const res = await api.put(`/transactions/${transaction.id}`, transaction)
             setTransactions(res.data)
         } catch (err) {
             console.log("Gagal mengubah transaksi:", err)
