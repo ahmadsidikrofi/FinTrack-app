@@ -73,6 +73,18 @@ Pastikan kamu sudah menginstal perangkat lunak berikut:
    
 7. Aplikasi akan berjalan di http://localhost:3000.
 
+
+
+### AI sebagai Fitur Inti Aplikasi
+
+Kekuatan sesungguhnya dari FinTrack berada pada fitur analisis personalnya. Ini bukan sekadar laporan statis, melainkan sebuah proses dinamis:
+
+- **Pengumpulan Data Real-time:** Saat pengguna meminta analisis, aplikasi akan memanggil beberapa endpoint API (`/dashboard/summary`, `/reports/spending-by-category`, dll.) untuk mengumpulkan data keuangan terbaru milik pengguna tersebut.
+- **Pembuatan Prompt Cerdas:** Data yang terkumpul kemudian dirangkum dan disusun secara dinamis menjadi sebuah *prompt* komprehensif yang dikirim ke API internal Next.js.
+- **Analisis & Penyajian Wawasan:** API internal ini secara aman memanggil model IBM Granite. AI menganalisis data dalam prompt dan mengembalikan ringkasan naratif beserta saran praktis dalam format JSON yang terstruktur. Hasilnya kemudian di-render di frontend sebagai laporan Markdown yang mudah dibaca, memberikan wawasan yang dipersonalisasi dan dapat ditindaklanjuti oleh pengguna.
+
+### Beberapa Screenshot Fin-Track
+
 ![image](https://github.com/user-attachments/assets/ba07e534-af0b-486f-baa8-6b8836d34a75)
 ![image](https://github.com/user-attachments/assets/ef3a1c7f-8e17-4103-9932-24801588346e)
 ![image](https://github.com/user-attachments/assets/0e8965d1-1a97-477f-a8bd-5e29102c4993)
