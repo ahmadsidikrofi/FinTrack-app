@@ -255,7 +255,7 @@ export default function AuthPage() {
                 </div>
 
                 <Button type="submit" className="w-full">
-                  Create Account
+                  {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : ` Create Account`}
                 </Button>
               </form>
             </TabsContent>
