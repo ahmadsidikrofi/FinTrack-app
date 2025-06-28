@@ -59,6 +59,7 @@ export default function AuthPage() {
   }
 
   const handleRegister = async (e) => {
+    setIsLoading(true)
     e.preventDefault()
     setErrors({})
     setSuccessMessage('')
@@ -66,12 +67,14 @@ export default function AuthPage() {
         const res = await api.post('/register', registerForm)
         if (res.data) {
             setSuccess(true)
+            setIsLoading(false)
             setSuccessMessage('Registrasi berhasil dilakukan. Silahkan login terlebih dahulu')
             setRegisterForm({ name: "", email: "", password: "", confirmPassword: "" })
             setActiveTab("login")
         }
     } catch (error) {
         setSuccess(false)
+        setIsLoading(false)
         if (error.response && error.response.status === 422) {
             const responseData = error.response.data;
             const backendErrors = responseData[0] || responseData.errors || {};
