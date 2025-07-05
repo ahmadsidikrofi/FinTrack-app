@@ -145,8 +145,8 @@ export default function Dashboard() {
 
       <div className="flex flex-1 flex-col gap-4 p-4">
         {/* Financial Summary Cards */}
-        <div className="grid gap-4 md:grid-cols-3">
-          <Card className="w-full md:max-w-md max-sm:max-w-md">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="w-full  md:max-w-md max-sm:max-w-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm font-medium">Total Pemasukan</CardTitle>
               <ArrowUp className="h-4 w-4 text-green-600" />
@@ -166,7 +166,7 @@ export default function Dashboard() {
             )}
           </Card>
 
-          <Card className="w-full md:max-w-md max-sm:max-w-md">
+          <Card className="w-full md:max-w-md max-sm:max-w-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm font-medium">Total Pengeluaran</CardTitle>
               <ArrowDown className="h-4 w-4 text-red-600" />
@@ -184,7 +184,7 @@ export default function Dashboard() {
             )}
           </Card>
 
-          <Card className="w-full md:max-w-md max-sm:max-w-md">
+          <Card className="w-full md:max-w-md max-sm:max-w-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm font-medium">Saldo Saat Ini</CardTitle>
               <Wallet className="h-4 w-4 text-blue-600" />
@@ -197,8 +197,8 @@ export default function Dashboard() {
         </div>
 
         {/* Charts Section */}
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Card className="max-sm:w-full max-sm:max-w-md">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+          <Card className="w-full sm:max-w-sm  md:max-w-lg max-sm:max-w-sm">
             <CardHeader>
               <CardTitle className="text-2xl">Pengeluaran per Kategori</CardTitle>
               <CardDescription>Distribusi pengeluaran bulan ini</CardDescription>
@@ -248,7 +248,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="max-sm:w-full max-sm:max-w-md">
+          <Card className="w-full md:max-w-lg max-sm:max-w-80">
             <CardHeader>
               <CardTitle className="text-2xl">Pemasukan vs. Pengeluaran</CardTitle>
               <CardDescription>6 bulan terakhir</CardDescription>
@@ -295,7 +295,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Transactions */}
-        <Card>
+        <Card className="w-full md:w-full max-sm:max-w-80">
           <CardHeader>
             <CardTitle className="text-2xl">Transaksi Terakhir</CardTitle>
             <CardDescription>{countTransaction} transaksi terbaru</CardDescription>

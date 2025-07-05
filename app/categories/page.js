@@ -149,12 +149,12 @@ export default function CategoriesPage() {
             <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
                 <SidebarTrigger className="-ml-1" />
                 <div className="flex flex-1 items-center justify-between">
-                    <h1 className="text-xl font-semibold">Manajemen Kategori</h1>
+                    <h1 className="max-sm:text-sm text-xl font-semibold">Manajemen Kategori</h1>
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
                             <Button onClick={handleAddNew}>
-                                <Plus className="mr-2 h-4 w-4" />
-                                Tambah Kategori Baru
+                                <Plus className="max-sm:mr-0 mr-2 h-4 w-4" />
+                                <p className="max-sm:hidden">Tambah Kategori Baru</p>
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
@@ -206,7 +206,7 @@ export default function CategoriesPage() {
                 </div>
             </header>
 
-            <div className="flex flex-1 flex-col gap-4 p-4">
+            <div className="flex flex-1 flex-col gap-4 p-4 w-full md:w-full max-sm:w-80">
                 <Card>
                     <CardHeader>
                         <CardTitle>Daftar Kategori</CardTitle>

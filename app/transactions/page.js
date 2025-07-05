@@ -206,12 +206,12 @@ export default function TransactionsPage() {
             <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
                 <SidebarTrigger className="-ml-1" />
                 <div className="flex flex-1 items-center justify-between">
-                    <h1 className="text-xl font-semibold">Transactions</h1>
+                    <h1 className="max-sm:text-sm text-xl font-semibold">Transactions</h1>
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
                             <Button onClick={handleAddNew}>
-                                <Plus className="mr-2 h-4 w-4" />
-                                Tambah Transaksi Baru
+                                <Plus className="max-sm:mr-0 mr-2 h-4 w-4" />
+                                <p className="max-sm:hidden">Tambah transaksi baru</p>
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
@@ -387,7 +387,7 @@ export default function TransactionsPage() {
                 </div>
 
                 {/* Transactions Table */}
-                <div className="rounded-md border">
+                <div className="rounded-md border w-full md:w-full max-sm:max-w-80">
                     <Table>
                         <TableHeader>
                             <TableRow>
