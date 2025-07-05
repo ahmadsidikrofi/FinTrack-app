@@ -171,7 +171,7 @@ export default function Dashboard() {
               <CardTitle className="text-sm font-medium">Total Pengeluaran</CardTitle>
               <ArrowDown className="h-4 w-4 text-red-600" />
             </CardHeader>
-            {income > 0 ? (
+            {expense > 0 ? (
               <CardContent>
                 <div className="text-2xl font-bold text-red-600">{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(expense)}</div>
                 <p className="text-xs text-muted-foreground">di bulan ini</p>
