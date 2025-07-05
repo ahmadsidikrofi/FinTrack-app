@@ -15,9 +15,9 @@ import api from "@/lib/axios"
 export default function Dashboard() {
   const [recentTransactions, setResentTransaction] = useState([])
   const [countTransaction, setCountTransaction] = useState([])
-  const [income, setIncome] = useState('')
-  const [expense, setExpense] = useState('')
-  const [currentBudget, setCurrentBudget] = useState('')
+  const [income, setIncome] = useState(0)
+  const [expense, setExpense] = useState(0)
+  const [currentBudget, setCurrentBudget] = useState(0)
   const [expenseData, setExpenseData] = useState([])
   const [incomeExpeseData, setIncomeExpenseData] = useState([])
   const [refreshData, setRefreshData] = useState(false)
@@ -31,9 +31,9 @@ export default function Dashboard() {
 
   const GetSummaryBudget = async () => {
     const res = await api.get('/dashboard/summary')
-    setIncome(res.data.total_income)
-    setExpense(res.data.total_expense)
-    setCurrentBudget(res.data.current_balance)
+    setIncome(res.data?.total_income)
+    setExpense(res.data?.total_expense)
+    setCurrentBudget(res.data?.current_balance)
   }
 
   const SpendingByCategory = async () => {
@@ -151,10 +151,19 @@ export default function Dashboard() {
               <CardTitle className="text-sm font-medium">Total Pemasukan</CardTitle>
               <ArrowUp className="h-4 w-4 text-green-600" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(income)}</div>
-              <p className="text-xs text-muted-foreground">dari beberapa bulan lalu</p>
-            </CardContent>
+            {console.log("Income:",income)}
+            {
+            income > 0 ? (
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(income)}</div>
+                <p className="text-xs text-muted-foreground">di bulan ini</p>
+              </CardContent>
+            ) : (
+              <CardContent>
+                <div className="text-xl font-bold text-green-600">Belum ada pemasukan</div>
+                <p className="text-xs text-muted-foreground">di bulan ini</p>
+              </CardContent>
+            )}
           </Card>
 
           <Card className="w-full md:max-w-md max-sm:max-w-md">
@@ -162,10 +171,17 @@ export default function Dashboard() {
               <CardTitle className="text-sm font-medium">Total Pengeluaran</CardTitle>
               <ArrowDown className="h-4 w-4 text-red-600" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-600">{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(expense)}</div>
-              <p className="text-xs text-muted-foreground">dari beberapa bulan lalu</p>
-            </CardContent>
+            {income > 0 ? (
+              <CardContent>
+                <div className="text-2xl font-bold text-red-600">{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(expense)}</div>
+                <p className="text-xs text-muted-foreground">di bulan ini</p>
+              </CardContent>
+            ) : (
+              <CardContent>
+                <div className="text-xl font-bold text-red-600">Belum ada pengeluaran</div>
+                <p className="text-xs text-muted-foreground">di bulan ini</p>
+              </CardContent>
+            )}
           </Card>
 
           <Card className="w-full md:max-w-md max-sm:max-w-md">
